@@ -278,47 +278,47 @@ int main(int argc, char* argv[]){
 
             case 2:
             {
-                int amount{std::stoi(argv[2])};
-                Calc tbl[amount]={};
+                const int amount{std::stoi(argv[2])};
+                std::vector <Calc> tbl(amount);
                 FILE* writing;                           //открытие файла с возможностью записи в бинарном виде
-                writing = fopen(argv[3], "ab");               //проверка на создание или открытие файла
+                writing = std::fopen(argv[3], "ab");               //проверка на создание или открытие файла
                 if (writing == NULL){ 
                     std::cout << "Ошибка! Невозможно открыть или создать файл\n\n";
                 }else {
                     int quantity{1};  //переменная для перемещения курсора
-                    fwrite(&amount, sizeof(int), 1, writing);  //запись числа экземпляров класса
-                    fseek(writing, sizeof(int), SEEK_SET);  //передвижение курсора в начало
+                    std::fwrite(&amount, sizeof(int), 1, writing);  //запись числа экземпляров класса
+                    std::fseek(writing, sizeof(int), SEEK_SET);  //передвижение курсора в начало
                     for (int q=0; q<amount; q++) {
                         tbl[q].enterData();
-                        fwrite(&tbl[q], sizeof(Calc), 1, writing);
-                        fseek(writing, quantity*sizeof(Calc), SEEK_CUR);
+                        std::fwrite(&tbl[q], sizeof(Calc), 1, writing);
+                        std::fseek(writing, quantity*sizeof(Calc), SEEK_CUR);
                         quantity++;
                     }
                 } 
-                fclose(writing);  //закрытие файла
+                std::fclose(writing);  //закрытие файла
             }
             break;
 
             case 3:              //Просмотр объектов
             {
                 int amount{std::stoi(argv[2])};
-                Calc tbl[amount]={};
+                std::vector <Calc> tbl(amount);
                 FILE* reading;
-                reading = fopen(argv[3], "rb");  //открытие файла в режиме чтение
+                reading = std::fopen(argv[3], "rb");  //открытие файла в режиме чтение
                 if (reading==NULL){    //проверка открытия файла
                     std::cout << "Ошибка! Невозможно прочитать файл\n\n";
                 }else{
                     int quantity{1};
                     header();
-                    fseek(reading, sizeof(int), SEEK_SET);
+                    std::fseek(reading, sizeof(int), SEEK_SET);
                     for (int q=0; q<amount; q++){
-                        fread(&tbl[q], sizeof(Calc), 1, reading);  //чтение экземпляра класса
-                        fseek(reading, quantity*sizeof(Calc), SEEK_CUR);
+                        std::fread(&tbl[q], sizeof(Calc), 1, reading);  //чтение экземпляра класса
+                        std::fseek(reading, quantity*sizeof(Calc), SEEK_CUR);
                         tbl[q].displayData(q+1);  //вывод
                         quantity++; 
                     }
                 }
-                fclose(reading);  //закрываем файл
+                std::fclose(reading);  //закрываем файл
             }
             break; 
 
